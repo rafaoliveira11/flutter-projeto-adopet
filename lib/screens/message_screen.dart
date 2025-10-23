@@ -7,43 +7,51 @@ class MessageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
+      
       body: const SingleChildScrollView(
         child: Column(
           children: [
-          
-            const _MessageHeader(),
-            const _MessageForm(),
-            const _Footer(),
+            _MessageHeader(),
+            _MessageForm(),
+            
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, 
-        selectedItemColor: const Color(0xFF88C9BF),
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pets),
-            label: 'Pets para adoção',
+
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+
+          BottomNavigationBar(
+            currentIndex: 1, 
+            selectedItemColor: const Color(0xFF88C9BF),
+            unselectedItemColor: Colors.grey,
+            type: BottomNavigationBarType.fixed,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.pets),
+                label: 'Pets para adoção',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.message_outlined),
+                label: 'Mensagens',
+              ),
+            ],
+            onTap: (index) {
+              if (index == 0) {
+                Navigator.pushReplacementNamed(context, '/home');
+              }
+            },
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message_outlined),
-            label: 'Mensagens',
-          ),
+          
+          const _Footer(),
         ],
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/home');
-          }
-        },
       ),
     );
   }
 }
 
 class _MessageHeader extends StatelessWidget {
-
   const _MessageHeader();
 
   @override
@@ -106,7 +114,6 @@ class _MessageHeader extends StatelessWidget {
 }
 
 class _MessageForm extends StatefulWidget {
-
   const _MessageForm();
 
   @override
@@ -145,104 +152,106 @@ class _MessageFormState extends State<_MessageForm> {
 
   @override
   Widget build(BuildContext context) {
-    
-    return Padding(
-      
-      padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
-      child: Container(
-       
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16), 
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              spreadRadius: 1,
-              blurRadius: 10,
-              offset: const Offset(0, 5),
+    return Container(
+      color: const Color(0xFFF7F7F7),
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Envie uma mensagem para o tutor:',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF3772FF),
             ),
-          ],
-        ),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Envie uma mensagem para o tutor:',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF3772FF),
-                ),
-              ),
-              const SizedBox(height: 32),
-              _CustomTextField(
-                labelText: 'Nome',
-                hintText: 'Insira seu nome completo',
-                controller: _nameController,
-                validator: (value) =>
-                    value!.isEmpty ? 'Campo obrigatório' : null,
-              ),
-              const SizedBox(height: 16),
-              _CustomTextField(
-                labelText: 'Telefone',
-                hintText: 'Insira seu telefone e/ou whatsapp',
-                controller: _phoneController,
-                validator: (value) =>
-                    value!.isEmpty ? 'Campo obrigatório' : null,
-              ),
-              const SizedBox(height: 16),
-              _CustomTextField(
-                labelText: 'Nome do animal',
-                hintText: 'Por qual animal você se interessou?',
-                controller: _petNameController,
-                validator: (value) =>
-                    value!.isEmpty ? 'Campo obrigatório' : null,
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Mensagem',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Color(0xFF3772FF)),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _messageController,
-                validator: (value) =>
-                    value!.isEmpty ? 'Campo obrigatório' : null,
-                decoration: InputDecoration(
-                  hintText: 'Escreva sua mensagem',
-                  filled: true,
-                  fillColor: Colors.white, 
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                maxLines: 5,
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: _sendMessage,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFC7071),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: const Text(
-                  'Enviar',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ),
-            ],
           ),
-        ),
+          const SizedBox(height: 24),
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                ),
+              ],
+            ),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _CustomTextField(
+                    labelText: 'Nome',
+                    hintText: 'Insira seu nome completo',
+                    controller: _nameController,
+                    validator: (value) =>
+                        value!.isEmpty ? 'Campo obrigatório' : null,
+                  ),
+                  const SizedBox(height: 16),
+                  _CustomTextField(
+                    labelText: 'Telefone',
+                    hintText: 'Insira seu telefone e/ou whatsapp',
+                    controller: _phoneController,
+                    validator: (value) =>
+                        value!.isEmpty ? 'Campo obrigatório' : null,
+                  ),
+                  const SizedBox(height: 16),
+                  _CustomTextField(
+                    labelText: 'Nome do animal',
+                    hintText: 'Por qual animal você se interessou?',
+                    controller: _petNameController,
+                    validator: (value) =>
+                        value!.isEmpty ? 'Campo obrigatório' : null,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Mensagem',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xFF3772FF)),
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _messageController,
+                    validator: (value) =>
+                        value!.isEmpty ? 'Campo obrigatório' : null,
+                    decoration: InputDecoration(
+                      hintText: 'Escreva sua mensagem',
+                      filled: true,
+                      fillColor: const Color(0xFFF6F6F6), 
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    maxLines: 5,
+                  ),
+                  const SizedBox(height: 32),
+                  ElevatedButton(
+                    onPressed: _sendMessage,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFC7071),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      minimumSize: const Size(double.infinity, 50),
+                    ),
+                    child: const Text(
+                      'Enviar',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -278,8 +287,7 @@ class _CustomTextField extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hintText,
             filled: true,
-            
-            fillColor: Colors.white, 
+            fillColor: const Color(0xFFF6F6F6), 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide.none,
@@ -292,7 +300,6 @@ class _CustomTextField extends StatelessWidget {
 }
 
 class _Footer extends StatelessWidget {
-  
   const _Footer();
 
   @override
