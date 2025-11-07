@@ -1,5 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:adopet_flutter/widgets/app_drawer.dart'; // Importa nossa gaveta
 
+// -----------------------------------------------------------------
+// DADOS FALSOS (Nenhuma mudança aqui)
+// -----------------------------------------------------------------
+const List<Map<String, String>> mockMessages = [
+  {
+    'name': 'Maria',
+    'message': 'Olá, tudo bem?',
+  },
+  {
+    'name': 'João',
+    'message': 'Você quer saber mais sobre o Dunga?',
+  },
+  {
+    'name': 'Pedro',
+    'message': 'Me interessei muito por ele',
+  },
+];
+
+// -----------------------------------------------------------------
+// PARTE 1: A TELA DE MENSAGENS (COM A CORREÇÃO DO RODAPÉ)
+// -----------------------------------------------------------------
 class MessageScreen extends StatelessWidget {
   const MessageScreen({super.key});
 
@@ -7,26 +29,31 @@ class MessageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
+      drawer: const AppDrawer(), // Adiciona a gaveta
       
-      body: const SingleChildScrollView(
+      // --- CORREÇÃO AQUI ---
+      // O body agora SÓ tem o conteúdo rolável.
+      // O _Footer e o "calço" SizedBox(height: 80) foram REMOVIDOS daqui.
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            _MessageHeader(),
-            _MessageForm(),
-            
+            const _MessageHeader(), // O cabeçalho verde
+            const _MessageListBody(), // O corpo com a lista de msgs
           ],
         ),
       ),
-
+      
+      // --- E A CORREÇÃO PRINCIPAL ESTÁ AQUI ---
+      // Colocamos uma Coluna no bottomNavigationBar
+      // para empilhar o Menu e o Rodapé FIXOS no fundo.
       bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min, // Faz a coluna ter o tamanho mínimo
         children: [
-
+          // 1. O Menu "Pets/Mensagens"
           BottomNavigationBar(
-            currentIndex: 1, 
+            currentIndex: 1, // DEIXA "MENSAGENS" SELECIONADO
             selectedItemColor: const Color(0xFF88C9BF),
             unselectedItemColor: Colors.grey,
-            type: BottomNavigationBarType.fixed,
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.pets),
@@ -39,11 +66,11 @@ class MessageScreen extends StatelessWidget {
             ],
             onTap: (index) {
               if (index == 0) {
-                Navigator.pushReplacementNamed(context, '/home');
+                Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
               }
             },
           ),
-          
+          // 2. O Rodapé Verde, agora FIXO abaixo do menu
           const _Footer(),
         ],
       ),
@@ -51,6 +78,9 @@ class MessageScreen extends StatelessWidget {
   }
 }
 
+// -----------------------------------------------------------------
+// PARTE 2: O CABEÇALHO (Nenhuma mudança aqui)
+// -----------------------------------------------------------------
 class _MessageHeader extends StatelessWidget {
   const _MessageHeader();
 
@@ -86,23 +116,24 @@ class _MessageHeader extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.menu, color: Colors.white),
-                        onPressed: () {},
+                        icon: Image.asset(
+                          'assets/images/icon_hamburguer.png',
+                          color: Colors.white,
+                          width: 24,
+                        ),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.person_outline,
-                            color: Colors.white, size: 30),
+                        icon: const Icon(Icons.person, color: Colors.white, size: 30),
                         onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/login',
-                            (route) => false,
-                          );
+                          Navigator.pushNamed(context, '/profile');
                         },
                       ),
                     ],
                   ),
-                  const SizedBox(height: 80),
+                  const SizedBox(height: 80), 
                 ],
               ),
             ),
@@ -113,42 +144,11 @@ class _MessageHeader extends StatelessWidget {
   }
 }
 
-class _MessageForm extends StatefulWidget {
-  const _MessageForm();
-
-  @override
-  State<_MessageForm> createState() => _MessageFormState();
-}
-
-class _MessageFormState extends State<_MessageForm> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _petNameController = TextEditingController();
-  final _messageController = TextEditingController();
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _phoneController.dispose();
-    _petNameController.dispose();
-    _messageController.dispose();
-    super.dispose();
-  }
-
-  void _sendMessage() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.reset();
-      _nameController.clear();
-      _phoneController.clear();
-      _petNameController.clear();
-      _messageController.clear();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Mensagem enviada com sucesso!')),
-      );
-    }
-  }
+// -----------------------------------------------------------------
+// PARTE 3: O CORPO DA TELA (Nenhuma mudança aqui)
+// -----------------------------------------------------------------
+class _MessageListBody extends StatelessWidget {
+  const _MessageListBody();
 
   @override
   Widget build(BuildContext context) {
@@ -156,10 +156,9 @@ class _MessageFormState extends State<_MessageForm> {
       color: const Color(0xFFF7F7F7),
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Envie uma mensagem para o tutor:',
+            'Caixa de mensagens',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -167,89 +166,10 @@ class _MessageFormState extends State<_MessageForm> {
             ),
           ),
           const SizedBox(height: 24),
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                ),
-              ],
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _CustomTextField(
-                    labelText: 'Nome',
-                    hintText: 'Insira seu nome completo',
-                    controller: _nameController,
-                    validator: (value) =>
-                        value!.isEmpty ? 'Campo obrigatório' : null,
-                  ),
-                  const SizedBox(height: 16),
-                  _CustomTextField(
-                    labelText: 'Telefone',
-                    hintText: 'Insira seu telefone e/ou whatsapp',
-                    controller: _phoneController,
-                    validator: (value) =>
-                        value!.isEmpty ? 'Campo obrigatório' : null,
-                  ),
-                  const SizedBox(height: 16),
-                  _CustomTextField(
-                    labelText: 'Nome do animal',
-                    hintText: 'Por qual animal você se interessou?',
-                    controller: _petNameController,
-                    validator: (value) =>
-                        value!.isEmpty ? 'Campo obrigatório' : null,
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Mensagem',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Color(0xFF3772FF)),
-                  ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _messageController,
-                    validator: (value) =>
-                        value!.isEmpty ? 'Campo obrigatório' : null,
-                    decoration: InputDecoration(
-                      hintText: 'Escreva sua mensagem',
-                      filled: true,
-                      fillColor: const Color(0xFFF6F6F6), 
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    maxLines: 5,
-                  ),
-                  const SizedBox(height: 32),
-                  ElevatedButton(
-                    onPressed: _sendMessage,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFC7071),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      minimumSize: const Size(double.infinity, 50),
-                    ),
-                    child: const Text(
-                      'Enviar',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          Column(
+            children: mockMessages.map((msg) {
+              return _MessageCard(name: msg['name']!, message: msg['message']!);
+            }).toList(),
           ),
         ],
       ),
@@ -257,59 +177,62 @@ class _MessageFormState extends State<_MessageForm> {
   }
 }
 
-class _CustomTextField extends StatelessWidget {
-  final String labelText;
-  final String hintText;
-  final TextEditingController controller;
-  final String? Function(String?)? validator;
+// -----------------------------------------------------------------
+// PARTE 4: O CARD DE MENSAGEM (Nenhuma mudança aqui)
+// -----------------------------------------------------------------
+class _MessageCard extends StatelessWidget {
+  final String name;
+  final String message;
 
-  const _CustomTextField({
-    required this.labelText,
-    required this.hintText,
-    required this.controller,
-    this.validator,
-  });
+  const _MessageCard({required this.name, required this.message});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          labelText,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold, color: Color(0xFF3772FF)),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          validator: validator,
-          decoration: InputDecoration(
-            hintText: hintText,
-            filled: true,
-            fillColor: const Color(0xFFF6F6F6), 
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide.none,
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            name,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF3772FF),
+              fontSize: 16,
             ),
           ),
-        ),
-      ],
+          const SizedBox(height: 4),
+          Text(
+            message,
+            style: const TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+        ],
+      ),
     );
   }
 }
 
+
+// -----------------------------------------------------------------
+// PARTE 5: O RODAPÉ (Nenhuma mudança aqui)
+// -----------------------------------------------------------------
 class _Footer extends StatelessWidget {
   const _Footer();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFF36D6AD),
+      color: const Color(0xFF88C9BF), 
       padding: const EdgeInsets.all(16),
-      width: double.infinity,
+      width: double.infinity, 
       child: const Text(
-        '2025 - Projeto fictício sem fins comerciais.',
+        '2025 - Desenvolvido por Rafa e Henrique. Projeto fictício sem fins comerciais.',
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.white, fontSize: 12),
       ),

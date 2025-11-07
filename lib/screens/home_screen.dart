@@ -1,5 +1,10 @@
+// ------------------------------------
+// ARQUIVO: lib/screens/home_screen.dart (CORRIGIDO)
+// ------------------------------------
 import 'package:flutter/material.dart';
+import 'package:adopet_flutter/widgets/app_drawer.dart'; 
 
+// A lista de Pets está perfeita!
 const List<Map<String, String>> mockPets = [
   {
     'name': 'Dunga',
@@ -75,6 +80,7 @@ const List<Map<String, String>> mockPets = [
   },
 ];
 
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -82,6 +88,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      drawer: const AppDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -102,7 +109,7 @@ class HomeScreen extends StatelessWidget {
         currentIndex: 0,
         selectedItemColor: const Color(0xFF88C9BF),
         unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.fixed, 
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.pets),
@@ -114,8 +121,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
         onTap: (index) {
+          // --- CORREÇÃO AQUI ---
+          // O botão "Mensagens" da barra de baixo (índice 1)
+          // agora leva para o FORMULÁRIO.
           if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/messages'); 
+            Navigator.pushNamed(context, '/send_message'); 
           }
         },
       ),
@@ -158,18 +168,21 @@ class _HomeHeader extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.menu, color: Colors.white),
-                        onPressed: () {},
+                        icon: Image.asset(
+                          'assets/images/icon_hamburguer.png',
+                          color: Colors.white,
+                          width: 24,
+                        ),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
                       ),
                       IconButton(
                         icon: const Icon(Icons.person_outline,
                             color: Colors.white, size: 30),
                         onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/login',
-                            (route) => false,
-                          );
+                          // Rota ativada em main.dart
+                          Navigator.pushNamed(context, '/profile');
                         },
                       ),
                     ],
@@ -202,29 +215,22 @@ class _PetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget petImage;
-    try {
-      petImage = Image.asset(
-        'assets/images/${pet['image']}',
-        width: 130, 
-        errorBuilder: (context, error, stackTrace) {
-          return Container(
-            width: 130,
-            height: 120,
-            color: Colors.grey[200],
-            child: const Icon(Icons.pets, color: Colors.grey, size: 40),
-          );
-        },
-      );
-    } catch (e) {
-
-      petImage = Container(
-        width: 130,
-        height: 120,
-        color: Colors.grey[200],
-        child: const Icon(Icons.pets, color: Colors.grey, size: 40),
-      );
-    }
+    // Código de imagem limpo, sem try-catch
+    final petImage = Image.asset(
+      'assets/images/${pet['image']}',
+      width: 130, 
+      height: 120,
+      fit: BoxFit.cover, // Adicionado para a imagem não distorcer
+      errorBuilder: (context, error, stackTrace) {
+        // Widget que aparece se a imagem não for encontrada
+        return Container(
+          width: 130,
+          height: 120,
+          color: Colors.grey[200],
+          child: const Icon(Icons.pets, color: Colors.grey, size: 40),
+        );
+      },
+    );
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -267,7 +273,9 @@ class _PetCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/messages'); 
+                    // --- CORREÇÃO AQUI ---
+                    // O link no card também leva para o FORMULÁRIO.
+                    Navigator.pushNamed(context, '/send_message'); 
                   },
                   child: Row(
                     children: [
