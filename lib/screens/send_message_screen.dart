@@ -1,60 +1,69 @@
-// ------------------------------------
-// ARQUIVO: lib/screens/send_message_screen.dart (CORRIGIDO)
-// ------------------------------------
 import 'package:flutter/material.dart';
-import 'package:adopet_flutter/widgets/app_drawer.dart'; // <-- IMPORTA A GAVETA
+import 'package:adopet_flutter/widgets/app_drawer.dart'; // Importa a gaveta
 
+// -----------------------------------------------------------------
+// PARTE 1: A TELA DE FORMULÁRIO (COM A CORREÇÃO DO RODAPÉ)
+// -----------------------------------------------------------------
 class SendMessageScreen extends StatelessWidget {
-  
   const SendMessageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
+      drawer: const AppDrawer(), // Adiciona a gaveta
       
-      // --- CORREÇÃO 1: ADICIONA A GAVETA ---
-      drawer: const AppDrawer(),
-      
-      // --- CORREÇÃO 2: AJUSTA O LAYOUT DO RODAPÉ ---
+      // --- CORREÇÃO AQUI ---
+      // O body agora SÓ tem o conteúdo rolável.
+      // O _Footer e o "calço" SizedBox(height: 80) foram REMOVIDOS daqui.
       body: const SingleChildScrollView(
         child: Column(
           children: [
-            _MessageHeader(),
-            _MessageForm(),
-            _Footer(), // O rodapé agora rola
-            SizedBox(height: 80), // O "calço" para o menu
+            _MessageHeader(), // O cabeçalho verde
+            _MessageForm(), // O formulário
           ],
         ),
       ),
-
-      // A barra de baixo agora só tem o menu
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, 
-        selectedItemColor: const Color(0xFF88C9BF),
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pets),
-            label: 'Pets para adoção',
+      
+      // --- E A CORREÇÃO PRINCIPAL ESTÁ AQUI ---
+      // Colocamos uma Coluna no bottomNavigationBar
+      // para empilhar o Menu e o Rodapé FIXOS no fundo.
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min, // Faz a coluna ter o tamanho mínimo
+        children: [
+          // 1. O Menu "Pets/Mensagens"
+          BottomNavigationBar(
+            currentIndex: 1, // DEIXA "MENSAGENS" SELECIONADO
+            selectedItemColor: const Color(0xFF88C9BF),
+            unselectedItemColor: Colors.grey,
+            type: BottomNavigationBarType.fixed,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.pets),
+                label: 'Pets para adoção',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.message_outlined),
+                label: 'Mensagens',
+              ),
+            ],
+            onTap: (index) {
+              if (index == 0) {
+                Navigator.pushReplacementNamed(context, '/home');
+              }
+            },
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message_outlined),
-            label: 'Mensagens',
-          ),
+          // 2. O Rodapé Verde, agora FIXO abaixo do menu
+          const _Footer(),
         ],
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/home');
-          }
-          // Se já está na tela 1, não faz nada.
-        },
       ),
     );
   }
 }
 
+// -----------------------------------------------------------------
+// PARTE 2: O CABEÇALHO (Com gaveta e ícone de perfil)
+// -----------------------------------------------------------------
 class _MessageHeader extends StatelessWidget {
   const _MessageHeader();
 
@@ -89,7 +98,7 @@ class _MessageHeader extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // --- CORREÇÃO 3: BOTÃO DA GAVETA ---
+                      // Botão de Hambúrguer para abrir a gaveta
                       IconButton(
                         icon: Image.asset(
                           'assets/images/icon_hamburguer.png',
@@ -100,7 +109,7 @@ class _MessageHeader extends StatelessWidget {
                           Scaffold.of(context).openDrawer();
                         },
                       ),
-                      // --- CORREÇÃO 4: BOTÃO DE PERFIL ---
+                      // Ícone de Perfil
                       IconButton(
                         icon: const Icon(Icons.person_outline,
                             color: Colors.white, size: 30),
@@ -121,7 +130,9 @@ class _MessageHeader extends StatelessWidget {
   }
 }
 
-// O seu _MessageForm (Stateful) estava perfeito!
+// -----------------------------------------------------------------
+// PARTE 3: O FORMULÁRIO (Seu código Stateful, está perfeito)
+// -----------------------------------------------------------------
 class _MessageForm extends StatefulWidget {
   const _MessageForm();
 
@@ -266,7 +277,9 @@ class _MessageFormState extends State<_MessageForm> {
   }
 }
 
-// O seu _CustomTextField estava perfeito!
+// -----------------------------------------------------------------
+// PARTE 4: CAMPO DE TEXTO (Seu código, está perfeito)
+// -----------------------------------------------------------------
 class _CustomTextField extends StatelessWidget {
   final String labelText;
   final String hintText;
@@ -309,17 +322,18 @@ class _CustomTextField extends StatelessWidget {
   }
 }
 
+// -----------------------------------------------------------------
+// PARTE 5: O RODAPÉ (Com seu texto e cor corretos)
+// -----------------------------------------------------------------
 class _Footer extends StatelessWidget {
   const _Footer();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // --- CORREÇÃO 5: COR DO RODAPÉ ---
       color: const Color(0xFF88C9BF),
       padding: const EdgeInsets.all(16),
       width: double.infinity,
-      // --- CORREÇÃO 6: TEXTO DO RODAPÉ ---
       child: const Text(
         '2025 - Desenvolvido por Rafa e Henrique. Projeto fictício sem fins comerciais.',
         textAlign: TextAlign.center,
