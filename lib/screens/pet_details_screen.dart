@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adopet_flutter/widgets/app_drawer.dart';
 
-// -----------------------------------------------------------------
-// PARTE 1: A TELA DE DETALHES (Com o layout de rodapé que você gosta)
-// -----------------------------------------------------------------
+
 class PetDetailsScreen extends StatelessWidget {
   final Map<String, String?> petData;
   const PetDetailsScreen({super.key, required this.petData});
@@ -14,7 +12,6 @@ class PetDetailsScreen extends StatelessWidget {
       backgroundColor: const Color(0xFFF7F7F7),
       drawer: const AppDrawer(),
       
-      // O layout com rodapé FIXO
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -40,11 +37,11 @@ class PetDetailsScreen extends StatelessWidget {
               }
             },
           ),
-          const _Footer(), // O rodapé verde fixo
+          const _Footer(), 
         ],
       ),
 
-      // O corpo da tela é rolável
+     
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -60,9 +57,6 @@ class PetDetailsScreen extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 2: CABEÇALHO DA TELA DE DETALHES
-// -----------------------------------------------------------------
 class _PetDetailsHeader extends StatelessWidget {
   final String petName;
   final String imageUrl;
@@ -118,7 +112,7 @@ class _PetDetailsHeader extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 80), // Espaço para o Avatar
+                  const SizedBox(height: 80), 
                 ],
               ),
             ),
@@ -151,9 +145,6 @@ class _PetDetailsHeader extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 3: CORPO DA TELA DE DETALHES (COM AS CORREÇÕES)
-// -----------------------------------------------------------------
 class _PetDetailsBody extends StatelessWidget {
   final Map<String, String?> petData;
   const _PetDetailsBody({required this.petData});
@@ -224,7 +215,7 @@ class _PetDetailsBody extends StatelessWidget {
               ),
               const SizedBox(width: 24),
               GestureDetector(
-                onTap: () { /* Ação de compartilhar */ },
+                onTap: () {  },
                 child: Row(
                   children: [
                     const Icon(Icons.share, size: 20, color: Color(0xFF88C9BF)),
@@ -250,16 +241,13 @@ class _PetDetailsBody extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // --- CORREÇÃO AQUI (Diminuir e Aproximar) ---
           if (petData['image_2'] != null)
             Padding(
-              // 1. "Mais próximas": Diminuí o padding de 8.0 para 4.0
               padding: const EdgeInsets.symmetric(vertical: 4.0), 
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
                   'assets/images/${petData['image_2']}',
-                  // 2. "Diminuir": Fixei a altura da imagem
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -269,13 +257,11 @@ class _PetDetailsBody extends StatelessWidget {
             
           if (petData['image_3'] != null)
             Padding(
-              // 1. "Mais próximas": Diminuí o padding de 8.0 para 4.0
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
                   'assets/images/${petData['image_3']}',
-                  // 2. "Diminuir": Fixei a altura da imagem
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -288,9 +274,6 @@ class _PetDetailsBody extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 4: O RODAPÉ (Padrão "Rafa e Henrique")
-// -----------------------------------------------------------------
 class _Footer extends StatelessWidget {
   const _Footer();
 

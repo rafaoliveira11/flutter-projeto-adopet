@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:adopet_flutter/widgets/app_drawer.dart'; // Importa a gaveta
+import 'package:adopet_flutter/widgets/app_drawer.dart'; 
 
-// -----------------------------------------------------------------
-// PARTE 1: A TELA DE FORMULÁRIO (COM A CORREÇÃO DO RODAPÉ)
-// -----------------------------------------------------------------
+
 class SendMessageScreen extends StatelessWidget {
   const SendMessageScreen({super.key});
 
@@ -11,29 +9,22 @@ class SendMessageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
-      drawer: const AppDrawer(), // Adiciona a gaveta
+      drawer: const AppDrawer(), 
       
-      // --- CORREÇÃO AQUI ---
-      // O body agora SÓ tem o conteúdo rolável.
-      // O _Footer e o "calço" SizedBox(height: 80) foram REMOVIDOS daqui.
       body: const SingleChildScrollView(
         child: Column(
           children: [
-            _MessageHeader(), // O cabeçalho verde
-            _MessageForm(), // O formulário
+            _MessageHeader(), 
+            _MessageForm(), 
           ],
         ),
       ),
       
-      // --- E A CORREÇÃO PRINCIPAL ESTÁ AQUI ---
-      // Colocamos uma Coluna no bottomNavigationBar
-      // para empilhar o Menu e o Rodapé FIXOS no fundo.
       bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min, // Faz a coluna ter o tamanho mínimo
+        mainAxisSize: MainAxisSize.min, 
         children: [
-          // 1. O Menu "Pets/Mensagens"
           BottomNavigationBar(
-            currentIndex: 1, // DEIXA "MENSAGENS" SELECIONADO
+            currentIndex: 1, 
             selectedItemColor: const Color(0xFF88C9BF),
             unselectedItemColor: Colors.grey,
             type: BottomNavigationBarType.fixed,
@@ -53,7 +44,6 @@ class SendMessageScreen extends StatelessWidget {
               }
             },
           ),
-          // 2. O Rodapé Verde, agora FIXO abaixo do menu
           const _Footer(),
         ],
       ),
@@ -61,9 +51,6 @@ class SendMessageScreen extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 2: O CABEÇALHO (Com gaveta e ícone de perfil)
-// -----------------------------------------------------------------
 class _MessageHeader extends StatelessWidget {
   const _MessageHeader();
 
@@ -98,7 +85,6 @@ class _MessageHeader extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Botão de Hambúrguer para abrir a gaveta
                       IconButton(
                         icon: Image.asset(
                           'assets/images/icon_hamburguer.png',
@@ -109,7 +95,6 @@ class _MessageHeader extends StatelessWidget {
                           Scaffold.of(context).openDrawer();
                         },
                       ),
-                      // Ícone de Perfil
                       IconButton(
                         icon: const Icon(Icons.person_outline,
                             color: Colors.white, size: 30),
@@ -130,9 +115,6 @@ class _MessageHeader extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 3: O FORMULÁRIO (Seu código Stateful, está perfeito)
-// -----------------------------------------------------------------
 class _MessageForm extends StatefulWidget {
   const _MessageForm();
 
@@ -277,9 +259,6 @@ class _MessageFormState extends State<_MessageForm> {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 4: CAMPO DE TEXTO (Seu código, está perfeito)
-// -----------------------------------------------------------------
 class _CustomTextField extends StatelessWidget {
   final String labelText;
   final String hintText;
@@ -322,9 +301,6 @@ class _CustomTextField extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 5: O RODAPÉ (Com seu texto e cor corretos)
-// -----------------------------------------------------------------
 class _Footer extends StatelessWidget {
   const _Footer();
 

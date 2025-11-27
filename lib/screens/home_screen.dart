@@ -1,10 +1,7 @@
-// ------------------------------------
-// ARQUIVO: lib/screens/home_screen.dart (CORRIGIDO)
-// ------------------------------------
+
 import 'package:flutter/material.dart';
 import 'package:adopet_flutter/widgets/app_drawer.dart'; 
 
-// Lista de Pets com todos os dados (inclusive os de detalhes)
 const List<Map<String, String?>> mockPets = [
   {
     'name': 'Dunga',
@@ -15,8 +12,8 @@ const List<Map<String, String?>> mockPets = [
     'location': 'Rio de Janeiro (RJ)',
     'details': '2 anos\nMacho\nPorte pequeno\nCalmo e educado\nSe dá bem com outros cachorros\nGosta de brincar e passear\nGosta de crianças mais velhas mas se assusta com bebês',
     'description': 'Dunga é encantador, conquista a todos com sua serenidade. Tem pelo macio e olhos expressivos que revelam a doçura de sua personalidade. Adora passar o tempo relaxando ao lado de seus humanos ou em um cantinho ensolarado...',
-    'image_2': 'Imagem_Dunga_2.png', // Da sua pasta de assets
-    'image_3': 'Imagem_Dunga_1.png', // Da sua pasta de assets (note o ' 1')
+    'image_2': 'Imagem_Dunga_2.png', 
+    'image_3': 'Imagem_Dunga_1.png', 
   },
   {
     'name': 'Felícia',
@@ -133,7 +130,6 @@ class HomeScreen extends StatelessWidget {
               color: const Color(0xFFF7F7F7),
               padding: const EdgeInsets.symmetric(vertical: 24),
               child: Column(
-                // Mapeia os dados para os cards
                 children: mockPets.map((petData) {
                   return _PetCard(pet: petData);
                 }).toList(),
@@ -159,7 +155,6 @@ class HomeScreen extends StatelessWidget {
         ],
         onTap: (index) {
           if (index == 1) {
-            // Rota para o Formulário de Envio
             Navigator.pushNamed(context, '/send_message'); 
           }
         },
@@ -243,7 +238,7 @@ class _HomeHeader extends StatelessWidget {
 }
 
 class _PetCard extends StatelessWidget {
-  final Map<String, String?> pet; // Aceita nulos para os campos extras
+  final Map<String, String?> pet; 
 
   const _PetCard({required this.pet});
 
@@ -264,15 +259,10 @@ class _PetCard extends StatelessWidget {
       },
     );
 
-    // --- CORREÇÃO AQUI ---
-    // O Card inteiro agora é clicável para ver os detalhes
     return GestureDetector(
-      // --- ESTA É A LINHA MÁGICA ADICIONADA ---
-      // Diz ao GestureDetector para capturar cliques na área "vazia"
       behavior: HitTestBehavior.opaque,
       
       onTap: () {
-        // Navega para a nova tela de detalhes, enviando os dados do pet
         Navigator.pushNamed(context, '/pet_details', arguments: pet);
       },
       child: Container(
@@ -314,11 +304,8 @@ class _PetCard extends StatelessWidget {
                   Text(pet['location']!,
                       style: const TextStyle(color: Colors.grey)),
                   const SizedBox(height: 8),
-                  
-                  // O link "Falar com responsável" continua funcionando
                   GestureDetector(
                     onTap: () {
-                      // Este GestureDetector "ganha" do de cima
                       Navigator.pushNamed(context, '/send_message'); 
                     },
                     child: Row(

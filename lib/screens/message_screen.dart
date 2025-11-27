@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:adopet_flutter/widgets/app_drawer.dart'; // Importa nossa gaveta
+import 'package:adopet_flutter/widgets/app_drawer.dart'; 
 
-// -----------------------------------------------------------------
-// DADOS FALSOS (Nenhuma mudança aqui)
-// -----------------------------------------------------------------
 const List<Map<String, String>> mockMessages = [
   {
     'name': 'Maria',
@@ -19,9 +16,7 @@ const List<Map<String, String>> mockMessages = [
   },
 ];
 
-// -----------------------------------------------------------------
-// PARTE 1: A TELA DE MENSAGENS (COM A CORREÇÃO DO RODAPÉ)
-// -----------------------------------------------------------------
+
 class MessageScreen extends StatelessWidget {
   const MessageScreen({super.key});
 
@@ -29,29 +24,23 @@ class MessageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
-      drawer: const AppDrawer(), // Adiciona a gaveta
+      drawer: const AppDrawer(),
       
-      // --- CORREÇÃO AQUI ---
-      // O body agora SÓ tem o conteúdo rolável.
-      // O _Footer e o "calço" SizedBox(height: 80) foram REMOVIDOS daqui.
+
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const _MessageHeader(), // O cabeçalho verde
-            const _MessageListBody(), // O corpo com a lista de msgs
+            const _MessageHeader(), 
+            const _MessageListBody(), 
           ],
         ),
       ),
       
-      // --- E A CORREÇÃO PRINCIPAL ESTÁ AQUI ---
-      // Colocamos uma Coluna no bottomNavigationBar
-      // para empilhar o Menu e o Rodapé FIXOS no fundo.
       bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min, // Faz a coluna ter o tamanho mínimo
+        mainAxisSize: MainAxisSize.min, 
         children: [
-          // 1. O Menu "Pets/Mensagens"
           BottomNavigationBar(
-            currentIndex: 1, // DEIXA "MENSAGENS" SELECIONADO
+            currentIndex: 1, 
             selectedItemColor: const Color(0xFF88C9BF),
             unselectedItemColor: Colors.grey,
             items: const [
@@ -70,7 +59,6 @@ class MessageScreen extends StatelessWidget {
               }
             },
           ),
-          // 2. O Rodapé Verde, agora FIXO abaixo do menu
           const _Footer(),
         ],
       ),
@@ -78,9 +66,6 @@ class MessageScreen extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 2: O CABEÇALHO (Nenhuma mudança aqui)
-// -----------------------------------------------------------------
 class _MessageHeader extends StatelessWidget {
   const _MessageHeader();
 
@@ -144,9 +129,6 @@ class _MessageHeader extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 3: O CORPO DA TELA (Nenhuma mudança aqui)
-// -----------------------------------------------------------------
 class _MessageListBody extends StatelessWidget {
   const _MessageListBody();
 
@@ -177,9 +159,6 @@ class _MessageListBody extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 4: O CARD DE MENSAGEM (Nenhuma mudança aqui)
-// -----------------------------------------------------------------
 class _MessageCard extends StatelessWidget {
   final String name;
   final String message;
@@ -218,10 +197,6 @@ class _MessageCard extends StatelessWidget {
   }
 }
 
-
-// -----------------------------------------------------------------
-// PARTE 5: O RODAPÉ (Nenhuma mudança aqui)
-// -----------------------------------------------------------------
 class _Footer extends StatelessWidget {
   const _Footer();
 

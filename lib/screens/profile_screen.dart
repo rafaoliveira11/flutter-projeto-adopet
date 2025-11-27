@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:adopet_flutter/widgets/app_drawer.dart'; // Importa a gaveta
+import 'package:adopet_flutter/widgets/app_drawer.dart'; 
 
-// -----------------------------------------------------------------
-// PARTE 1: A TELA PERFIL (COM O LAYOUT FIXO DO RODAPÉ)
-// -----------------------------------------------------------------
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -11,29 +9,22 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
-      drawer: const AppDrawer(), // Adiciona a gaveta
+      drawer: const AppDrawer(), 
       
-      // --- CORREÇÃO DO RODAPÉ (Início) ---
-      // O body agora SÓ tem o conteúdo rolável.
-      // O _Footer e o "calço" SizedBox(height: 80) foram REMOVIDOS daqui.
       body: SingleChildScrollView(
         child: Column(
           children: const [
-            _ProfileHeader(), // Cabeçalho com o texto e ícone corrigidos
-            _ProfileCard(), // Card de perfil com campos editáveis
+            _ProfileHeader(), 
+            _ProfileCard(), 
           ],
         ),
       ),
-      
-      // --- E A CORREÇÃO PRINCIPAL ESTÁ AQUI ---
-      // Colocamos uma Coluna no bottomNavigationBar
-      // para empilhar o Menu e o Rodapé FIXOS no fundo.
+
       bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min, // Faz a coluna ter o tamanho mínimo
+        mainAxisSize: MainAxisSize.min, 
         children: [
-          // 1. O Menu "Pets/Mensagens"
           BottomNavigationBar(
-            currentIndex: 0, // Quando estamos no Perfil, "Pets para adoção" está selecionado
+            currentIndex: 0, 
             selectedItemColor: const Color(0xFF88C9BF), 
             unselectedItemColor: Colors.grey,
             items: const [
@@ -54,7 +45,6 @@ class ProfileScreen extends StatelessWidget {
               }
             },
           ),
-          // 2. O Rodapé Verde, agora FIXO abaixo do menu
           const _Footer(),
         ],
       ),
@@ -62,9 +52,6 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 2: O CABEÇALHO (Ajustado ao Figma)
-// -----------------------------------------------------------------
 class _ProfileHeader extends StatelessWidget {
   const _ProfileHeader();
 
@@ -76,7 +63,6 @@ class _ProfileHeader extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // A curva branca abaixo do header
           Positioned(
             bottom: -80,
             left: 0,
@@ -100,7 +86,6 @@ class _ProfileHeader extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Botão de Hambúrguer para abrir a gaveta
                       IconButton(
                         icon: Image.asset(
                           'assets/images/icon_hamburguer.png',
@@ -111,7 +96,6 @@ class _ProfileHeader extends StatelessWidget {
                           Scaffold.of(context).openDrawer();
                         },
                       ),
-                      // Ícone de Perfil (já estamos no perfil, não faz nada ao clicar)
                       IconButton(
                         icon: const Icon(Icons.person, color: Colors.white, size: 30),
                         onPressed: () {},
@@ -119,17 +103,16 @@ class _ProfileHeader extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  // --- TEXTO DO HEADER AJUSTADO AO FIGMA ---
                   const Text(
                     'Esse é o perfil que aparece para responsáveis ou ONGs que recebem sua mensagem.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 14, // Um pouco menor para caber
+                      fontSize: 14, 
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 80), // Espaço para a curva
+                  const SizedBox(height: 80), 
                 ],
               ),
             ),
@@ -140,9 +123,6 @@ class _ProfileHeader extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 3: O CARTÃO DE PERFIL (COM ESTADO E AJUSTES DE LAYOUT)
-// -----------------------------------------------------------------
 class _ProfileCard extends StatefulWidget {
   const _ProfileCard();
 
@@ -160,7 +140,6 @@ class _ProfileCardState extends State<_ProfileCard> {
   @override
   void initState() {
     super.initState();
-    // Valores iniciais como no Figma
     _nameController = TextEditingController(text: 'Joana Magalhães');
     _phoneController = TextEditingController(text: '55 11 XXXXXXXX');
     _cityController = TextEditingController(text: 'São Paulo');
@@ -179,7 +158,7 @@ class _ProfileCardState extends State<_ProfileCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24), // Margem normal
+      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24), 
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -198,7 +177,7 @@ class _ProfileCardState extends State<_ProfileCard> {
           const Center(
             child: Text(
               'Perfil',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF3772FF)), // Azul do Figma
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF3772FF)), 
             ),
           ),
           const SizedBox(height: 24),
@@ -210,7 +189,6 @@ class _ProfileCardState extends State<_ProfileCard> {
                 style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF3772FF)),
               ),
               const SizedBox(width: 8),
-              // Ícone de caneta ao lado de "Foto" (como no Figma)
               const Icon(Icons.edit, size: 16, color: Color(0xFF3772FF)),
             ],
           ),
@@ -224,7 +202,7 @@ class _ProfileCardState extends State<_ProfileCard> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  _isEditing ? 'Clique na câmera para editar foto' : 'Clique na foto para editar', // Texto ajustado ao Figma
+                  _isEditing ? 'Clique na câmera para editar foto' : 'Clique na foto para editar', 
                   style: const TextStyle(fontSize: 12, color: Color(0xFFFC7071)),
                 ),
               ],
@@ -232,12 +210,11 @@ class _ProfileCardState extends State<_ProfileCard> {
           ),
           const SizedBox(height: 24),
           
-          // Campos de informação do perfil
           _ProfileInfoField(
             label: 'Nome', 
             controller: _nameController, 
             isEditing: _isEditing,
-            hintText: 'Insira seu nome completo', // Hint text para edição
+            hintText: 'Insira seu nome completo', 
           ),
           const SizedBox(height: 16),
           _ProfileInfoField(
@@ -267,7 +244,6 @@ class _ProfileCardState extends State<_ProfileCard> {
             onPressed: () {
               setState(() {
                 _isEditing = !_isEditing;
-                // No mundo real, você salvaria os dados em um backend aqui
                 if (!_isEditing) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Perfil salvo com sucesso!')),
@@ -291,22 +267,19 @@ class _ProfileCardState extends State<_ProfileCard> {
   }
 }
 
-// -----------------------------------------------------------------
-// PARTE 4: WIDGET DE INFORMAÇÃO (EDITÁVEL)
-// -----------------------------------------------------------------
 class _ProfileInfoField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final bool isEditing;
   final int maxLines;
-  final String? hintText; // Adicionado hintText
+  final String? hintText; 
 
   const _ProfileInfoField({
     required this.label,
     required this.controller,
     required this.isEditing,
     this.maxLines = 1,
-    this.hintText, // Inicializado
+    this.hintText, 
   });
 
   @override
@@ -323,14 +296,14 @@ class _ProfileInfoField extends StatelessWidget {
             ? TextFormField(
                 controller: controller,
                 maxLines: maxLines,
-                decoration: InputDecoration( // Usando InputDecoration para o hintText
+                decoration: InputDecoration( 
                   filled: true,
                   fillColor: const Color(0xFFF6F6F6),
-                  border: OutlineInputBorder( // Usando OutlineInputBorder para borda mais consistente
+                  border: OutlineInputBorder( 
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide.none,
                   ),
-                  hintText: hintText, // Adicionando o hintText
+                  hintText: hintText, 
                 ),
               )
             : Text(
@@ -343,9 +316,6 @@ class _ProfileInfoField extends StatelessWidget {
 }
 
 
-// -----------------------------------------------------------------
-// PARTE 5: O RODAPÉ (PADRONIZADO)
-// -----------------------------------------------------------------
 class _Footer extends StatelessWidget {
   const _Footer();
 
@@ -355,7 +325,6 @@ class _Footer extends StatelessWidget {
       color: const Color(0xFF88C9BF), 
       padding: const EdgeInsets.all(16),
       width: double.infinity, 
-      // Padronizando o texto com o que você disse que estava "perfeito"
       child: const Text(
         '2025 - Desenvolvido por Rafa e Henrique. Projeto fictício sem fins comerciais.',
         textAlign: TextAlign.center,
