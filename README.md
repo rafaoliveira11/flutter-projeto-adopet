@@ -9,9 +9,9 @@
 <h4 align="center">📱 Projeto acadêmico para conectar corações e patas 🐾</h4>
 
 <p align="center">
- <img width="511" height="762" alt="Image" src="https://github.com/user-attachments/assets/b2823477-b063-4553-9fed-96611e97bfc1" />
-<img width="748" height="809" alt="Image" src="https://github.com/user-attachments/assets/aed2a60c-68b1-4e61-a2c0-d4fbeb48b827" />
-<img width="746" height="804" alt="Image" src="https://github.com/user-attachments/assets/f79ddb08-7e1a-4a5f-aa4c-93aff7e426e8" />
+<img src="https://img.shields.io/badge/Flutter-3.0-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter">
+  <img src="https://img.shields.io/badge/Dart-3.0-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart">
+  <img src="https://img.shields.io/badge/Status-Concluído-success?style=for-the-badge" alt="Status">
 </p>
 
 <p align="center">
@@ -36,7 +36,7 @@ O objetivo principal é criar uma solução tecnológica para conectar pessoas i
 
 | Tela de Login | Lista de Pets | Chat / Mensagens |
 |:---:|:---:|:---:|
-| <img src="https://via.placeholder.com/200x400?text=Login" width="200"> | <img src="https://via.placeholder.com/200x400?text=Lista+Pets" width="200"> | <img src="https://via.placeholder.com/200x400?text=Chat" width="200"> |
+| <img width="511" height="762" alt="Image" src="https://github.com/user-attachments/assets/b2823477-b063-4553-9fed-96611e97bfc1" />| <img width="748" height="809" alt="Image" src="https://github.com/user-attachments/assets/aed2a60c-68b1-4e61-a2c0-d4fbeb48b827" />| <img width="746" height="804" alt="Image" src="https://github.com/user-attachments/assets/f79ddb08-7e1a-4a5f-aa4c-93aff7e426e8" /> |
 
 ---
 
